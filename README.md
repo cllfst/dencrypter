@@ -7,4 +7,5 @@
                             |___/|_|                        
 ```
 
-or "Data encrypter"
+"Data encrypter" is a tool that helps you control your personal data.
+It encrypts your photos, videos, pdf… before putting them on the internet.
