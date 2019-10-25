@@ -6,9 +6,13 @@
     <input type="submit" value="submit">
 </form>
 <form action='/encrypt' method='POST'>
+    File Name <input type="text" name="fileName">
     <input type="submit" name="encrypt" value="encrypt">
 </form><br>
-
+<form action='/decrypt' method='POST'>
+    File Name <input type="text" name="fileName">
+    <input type="submit" name="decrypt" value="decrypt">
+</form><br>
 
 <style>
     body {
