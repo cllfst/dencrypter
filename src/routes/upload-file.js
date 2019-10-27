@@ -4,16 +4,13 @@ const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
 const formidable = require('formidable');
-const exec = require('child_process').exec;
-const WebCrypto = require("node-webcrypto-ossl");
-var webcrypto = new WebCrypto({
-    directory: "keys"
-  });
-var keyStorage = webcrypto.keyStorage;
-
-
-
-
+var RSA = require('hybrid-crypto-js').RSA;
+var Crypt = require('hybrid-crypto-js').Crypt;
+var crypt = new Crypt();
+var rsa = new RSA({
+    keySize: 2048,
+    rsaStandard: 'RSA-OAEP', // RSA-OAEP or RSAES-PKCS1-V1_5,
+});
 
 app.set('view engine', 'ejs');
 
@@ -36,27 +33,38 @@ app.post('/upload',(req,res) => {
 
 app.post('/encrypt',(req,res) => {
     const fileName=req.body.fileName;
-    webcrypto.subtle.generateKey({
-        name: "RSASSA-PKCS1-v1_5",
-        modulusLength: 1024,
-        publicExponent: new Uint8Array([1, 0, 1]),
-        hash: {
-          name: "SHA-1"
-        }
-      },
-        false,
-        ["sign", "verify"]
-      )
-      .then(function(keyPairs){
-        keyStorage.setItem(fileName+"PublicKey", keyPairs.publicKey);
-        keyStorage.setItem(fileName+"PrivateKey", keyPairs.privateKey);
-      })
+    rsa.generateKeyPair(function(keyPair) {
+        // Callback function receives new key pair as a first argument
+        var publicKey = keyPair.publicKey;
+        var privateKey = keyPair.privateKey;
+        
+        // data =  fs.readFileSync("../data/uploads/"+fileName); 
+        data = "a test"; 
+        console.log("data : "+data);
+        encrypted = crypt.encrypt(publicKey, data);
+
+        //saving encrypted data
+        fs.writeFileSync("../data/encrypted/"+fileName+"Encrypted",encrypted);
+       
+        //saving keys
+        fs.writeFileSync("../data/keys/"+fileName+"PublicKey.pem",publicKey);
+        fs.writeFileSync("../data/keys/"+fileName+"PrivateKey.pem",privateKey);
+    });
+
+
     res.render(path.resolve("../views/upload-file.ejs"));
+
 });
 
 app.post('/decrypt',(req,res) => {
     const fileName=req.body.fileName;
-    keyStorage.getItem(fileName+"PrivateKey");
+    // iff error??
+    encrypted = fs.readFileSync("../data/encrypted/"+fileName+"Encrypted");
+    privateKey = fs.readFileSync("../data/keys/"+fileName+"PrivateKey.pem");
+    decrypted = crypt.decrypt("" + privateKey, ""+encrypted);
+    console.log("decrypted : "+decrypted)
+    fs.writeFileSync("../data/uploads/"+fileName+"Decrypted",decrypted);
+
     res.render(path.resolve("../views/upload-file.ejs"));
 });
 const port = process.env.PORT || 4000 ;
