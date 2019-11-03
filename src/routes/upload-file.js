@@ -1,7 +1,4 @@
-const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const app = express();
 const fs = require('fs');
 const formidable = require('formidable');
 var RSA = require('hybrid-crypto-js').RSA;
@@ -12,20 +9,17 @@ var rsa = new RSA({
     rsaStandard: 'RSA-OAEP',
 });
 
-app.use(express.static(path.join(__dirname, '../public')));
-app.use(bodyParser.urlencoded());
-
-app.set('view engine', 'ejs');
+var express = require('express');
+var router = express.Router();
 
 
-
-app.get('/home', (req, res) => {
+router.get('/', (req, res) => {
     userName = 'Mark';
     res.render(path.join(__dirname, "../views/upload-file.ejs"), {
         user : userName,
     });
 });
-app.post('/upload', (req, res) => {
+router.post('/upload', (req, res) => {
     console.log(`hi`);
     new formidable.IncomingForm().parse(req)
     .on('fileBegin', (name, file) => {
@@ -37,7 +31,7 @@ app.post('/upload', (req, res) => {
     res.render(path.join(__dirname, "../views/upload-file.ejs"));
 });
 
-app.post('/encrypt', (req, res) => {
+router.post('/encrypt', (req, res) => {
     const fileName=req.body.fileName;
     rsa.generateKeyPair(function(keyPair) {
         // Callback function receives new key pair as a first argument
@@ -61,7 +55,7 @@ app.post('/encrypt', (req, res) => {
 
 });
 
-app.post('/decrypt', (req, res) => {
+router.post('/decrypt', (req, res) => {
     const fileName=req.body.fileName;
     // iff error??
     encrypted = fs.readFileSync("../data/encrypted/"+fileName+"Encrypted", "binary");
@@ -73,6 +67,5 @@ app.post('/decrypt', (req, res) => {
 
     res.render(path.resolve("../views/upload-file.ejs"));
 });
-const port = process.env.PORT || 3000 ;
 
-app.listen(port, () => console.log(`listening on port ${port} `));
+module.exports = router;
