@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const User = require('../models/users');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
+
 require('dotenv/config');
 
 
@@ -13,7 +14,7 @@ router.get('/',(req,res,next) => {
     
 });
 
-router.post('/', async (req,res) => {   
+router.post('/',  (req,res) => {   
     
     const user = new User({
         firstName: req.body.firstName,
@@ -22,23 +23,25 @@ router.post('/', async (req,res) => {
         email: req.body.email,
         password: req.body.password
         });
-        const users = await User.find();
+        message = false;
+        
+        MongoClient.connect(url,  function(err, client) {
+            var db = client.db("users"); 
+            
+
+            db.collection('users').find({username: req.body.username}).toArray(function(err, result) {
+                if (result.length>0) 
+                    res.sendFile(path.resolve('../src/public/signUperror.html'));
+
+                else 
+                    res.sendFile(path.resolve('../src/public/home.html'));
+                
+            });
+            
+            
+        });
+     })
     
-        if( verifyUserByUsername(users,req.body.username) && verifyUserByEmail(users,req.body.email) ) {
-            user.save()
-            
-            res.sendFile(path.resolve('../src/public/home.html'));
-
-        }
-        else {
-            
-            res.send(500,'username/email exists') 
-        }
-
-   
-          console.log('no return');                           
-          
-      });
 
 router.post('/checkusers', async (req,res) => {
         const users = await User.find();
@@ -51,6 +54,7 @@ mongoose.connect('mongodb://localhost/users', function(err) {
   if (err) { throw err; }
   console.log("connected to DB!!");
 });
+
 
 //My functions
 
@@ -74,3 +78,22 @@ function verifyUserByEmail(users,email) {
 
 
 module.exports = router;
+
+
+ // if ( UsernameNotExist && EmailNotExist ) {
+            //     console.log('verification is done')
+                
+            //     res.sendFile(path.resolve('../src/public/home.html'));
+            // }
+    
+            // else {
+                
+            //     res.send(500,'username/email exists') 
+            // }
+
+            // db.collection('users').findOne({ email: req.body.email }, function( err, Verif_email) {
+            //     if( Verif_email) { EmailNotExist = true;}
+            // });
+           
+            
+            //  console.log(EmailNotExist);

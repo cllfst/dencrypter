@@ -47,8 +47,6 @@
 
         }  
         
-
-
         function emailAdd() {
             var mail = document.getElementById("email").value;
             var at;
@@ -68,12 +66,8 @@
         
 
         }
-    
 
-
-
-
-        function passwordFn() {
+            function passwordFn() {
             var entier = false;
             var min = false;
             var maj = false;

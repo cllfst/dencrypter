@@ -1,0 +1,26 @@
+<form action='/signUp' method='post'>
+<div>Email</div><br>
+    <input id="email" type="email" name="email" onblur="emailAdd()"><br>
+    <div id="emailM"></div>
+</form>
+    <script>
+         function emailAdd() {
+            var mail = document.getElementById("email").value;
+            var at;
+            var point;
+            var message = document.getElementById("emailM");
+
+            at = mail.lastIndexOf("@");
+            point = mail.lastIndexOf(".");
+            if (at == -1 || point == -1 || at > point) { 
+                message.innerHTML = "invalid email form"; 
+                return false;
+                }
+            else {
+                message.innerHTML = ""; 
+                return true;
+            }
+        
+
+        }
+    </script>

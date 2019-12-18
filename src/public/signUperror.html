@@ -6,6 +6,7 @@
 <body>
 <h1>Create an account</h1>
     
+<h1 style="color:red;">Username exists !</h1>
     
 <form id="error" action='/signUp' method='post' >
     
@@ -22,11 +23,14 @@
     
     <div>Username </div><br>
     <input id="username" type="text" name="username" onblur="userName()"><br>
-    <div id="Uname"></div>   
+    <div id="Uname"></div>
+    
+    
     
     <div>Email</div><br>
     <input id="email" type="email" name="email" onblur="emailAdd()"><br>
     <div id="emailM"></div>
+    
     
     <div>Password</div> <br>
     <input id="password" type="password" name="password"  onblur="passwordFn()" ><br>
@@ -40,7 +44,7 @@
     
     <input type="text" name="test" hidden > 
     
-    <input  type="submit" name="sign" value="sign up" onclick="submitFunction()"><br> 
+     <input  type="submit" name="sign" value="sign up" onclick="submitFunction()"><br>
     
     
    
@@ -51,5 +55,3 @@
     
 </body>
 </html>
-
-  
