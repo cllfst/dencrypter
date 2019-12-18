@@ -4,66 +4,48 @@ var path = require('path');
 var mongoose = require('mongoose');
 var User = require('../schema_BD/schema_mongodb');
 var MongoDencrypter = require('mongodb').MongoClient;
-var url = 'mongodb://localhost/users';
+var url = 'mongodb://localhost/dencrypter';
 const Schema = mongoose.Schema;
-
 
 ////send html file
 router.get('/', function(req, res) {
     res.sendFile(path.resolve("../src/public/login.html"));
 });
 
-
-router.post('/', async(req, res) => {
-
+router.post('/', (req, res) => {
+    //console.log(req);
+    //console.log(req.body);
     const user = new User({
         email: req.body.email,
         password: req.body.password
     });
-    const users = await User.find();
+    //const users = await user.find({"email": req.body.email, "password": req.body.password});
 
-    if (verifyUserExist(users, req.body.email, req.body.password)) {
-        //go to bouri's house
-        //res.sendFile(path.resolve('../src/public/bouri.html'));
-        res.send(500, 'mar7ba')
-    }
+    ////connect to BD
+    mongoose.connect(url, function(err, db) {
+        console.log("connected");
+        if (err) throw err;
+        //var dbo = db.db("dencrypter");
 
-    if (verifyUserByPassword(users, req.body.email, req.body.password)) {
-        res.send(500, 'please verify your password');
-    } else {
-        res.send(500, 'you may go to sing_up ;)')
+        if (db.collection("user").find({ "email": req.body.email, "password": req.body.password }).count() == 1) {
+            console.log("we found you");
+            //go to bouri's house
+            //res.sendFile(path.resolve('../src/public/bouri.html'));
+            res.send(200, 'mar7ba');
+            return
+        }
+
+        if (db.collection("user").find({ "email": req.body.email }).count()) {
+            console.log("is that you ?");
+            res.send(401, 'try again');
+            return
+        } else {
+            res.send(500, 'you may go to sing_up ;)');
             //go to abaybar's house 
-    }
+        }
+        db.close();
+    });
+
 });
-
-
-//connect to BD
-
-//MongoDencrypter.connect(url, function(err, db) {
-mongoose.connect(url, function(err, db) {
-    console.log("connected");
-    if (err) { throw err; }
-    console.log("connected to DB!!");
-    //db.close();
-});
-
-//mongoose.connection.close();
-
-////My functions
-function verifyUserExist(users, email, password) {
-    var i;
-    for (i = 0; i < users.length; i++) {
-        if (users[i].email == email && users[i].password == password) return true;
-    }
-    return false;
-}
-
-function verifyUserByPassword(users, email, password) {
-    var i;
-    for (i = 0; i < users.length; i++) {
-        if (users[i].email == email && users[i].password != password) return true;
-    }
-    return false;
-}
 
 module.exports = router;
