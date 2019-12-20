@@ -28,10 +28,11 @@ router.post('/', (req, res) => {
         if (err) throw err;
         var dbo = db.db("users");
         dbo.collection("users").find({$and: [{ "email": req.body.email, "password": req.body.password }]}).toArray(function(err,data){
+            
                 if (data.length==1){
-                    res.sendFile(res.sendFile(path.resolve('../src/public/home.html')));
+                    res.sendFile(path.resolve('../src/public/home.html'));
                 }
-                else res.sendFile(res.sendFile(path.resolve('../src/public/login.html')));
+                else res.sendFile(path.resolve('../src/public/login.html'));
 
         })
 
