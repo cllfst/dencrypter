@@ -25,22 +25,23 @@ router.post('/',  (req,res) => {
         });
         message = false;
         
-        MongoClient.connect(url,  function(err, client) {
+        MongoClient.connect(url, function(err, client) {
             var db = client.db("users"); 
             
-
             db.collection('users').find({username: req.body.username}).toArray(function(err, result) {
                 if (result.length>0) 
                     res.sendFile(path.resolve('../src/public/signUperror.html'));
 
-                else 
+                else {
+                    user.save()
                     res.sendFile(path.resolve('../src/public/home.html'));
+                }
+             client.close();       
                 
-            });
-            
-            
+            });            
         });
-     })
+
+     });
     
 
 router.post('/checkusers', async (req,res) => {
@@ -49,11 +50,6 @@ router.post('/checkusers', async (req,res) => {
 
     } )
 
-
-mongoose.connect('mongodb://localhost/users', function(err) {
-  if (err) { throw err; }
-  console.log("connected to DB!!");
-});
 
 
 //My functions
