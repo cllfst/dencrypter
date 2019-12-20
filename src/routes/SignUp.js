@@ -51,7 +51,6 @@ router.post('/checkusers', async (req,res) => {
     } )
 
 
-
 //My functions
 
 function verifyUserByUsername(users,username) {
