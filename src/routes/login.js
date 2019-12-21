@@ -27,15 +27,26 @@ router.post('/', (req, res) => {
         console.log("connected");
         if (err) throw err;
         var dbo = db.db("users");
-        dbo.collection("users").find({$and: [{ "email": req.body.email, "password": req.body.password }]}).toArray(function(err,data){
+        dbo.collection("users").countDocuments({$and: [{ "email": req.body.email, "password": req.body.password }]},function(err,length){
             
-                if (data.length==1){
+                if (length==1){
                     res.sendFile(path.resolve('../src/public/home.html'));
                 }
                 else res.sendFile(path.resolve('../src/public/login.html'));
 
         })
+        //OR
 
+        //dbo.collection("users").find({$and: [{ "email": req.body.email, "password": req.body.password }]}).count(function(err,length){
+            
+            // if (length==1){
+            //     res.sendFile(path.resolve('../src/public/home.html'));
+            // }
+            // else res.sendFile(path.resolve('../src/public/login.html'));
+
+            ////// WE USE THE FIRST EXAMPLE BECAUSE DB.COLLECTION.COUNT() IS GOING TO BE DEPRACTED!!//////
+
+    })
         
         db.close();
     });
