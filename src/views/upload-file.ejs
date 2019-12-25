@@ -6,52 +6,74 @@
         <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <h1>Oh hi <%=user%> ! </h1>
+        <h1>Oh hi mark ! </h1>
         <h1>Welcome to Dencrypter, the most visited site in 2025 !! </h1>
 
 
-        <div>upload your files here </div><br>
-        <form action='/upload' enctype="multipart/form-data" method='POST'>
-            File to upload <input type="file" name="file">
-            <input type="submit" value="upload">
-        </form>
-        
-        <input type="file" id="file" hidden="hidden" />
-        <button type="button" id="upload-button">Choose a file to encrypt</button>
-        <span id="custom-text">No file chosen yet</span>
-        <button type="button" id="encrypt">Encrypt you file</button>
-        <script>
-            
-            const upButton = document.getElementById("upload-button");
-            const file = document.getElementById("file");
-            const text = document.getElementById("custom-text");
-            const encrypt = document.getElementById("encrypt");
-            upButton.addEventListener("click", function(){
-                file.click();
-            });
-            file.addEventListener("change", function(){
-                if (file.value){
-                    text.innerHTML = file.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
-                } else {
-                    text.innerHTML = "No file chosen yet";
-                }
-                console.log(file);
-            });
-            encrypt.addEventListener("click", function(){
-                if (file.value){
-                    alert(file.getAsBinary());
-                }
-            });
+        <html>
+  <head>
+    <script src="script.js"></script>
+    <script type="text/javascript" src="hybrid-crypto.min.js"></script>
 
-        </script>
-        
+  </head>
 
-        <form action='/decrypt' method='POST'>
-            File to decrypt <input type="upload" name="fileName">
-            <input type="submit" name="decrypt" value="decrypt">
-        </form><br>
-        
-    </body>
+  <body onload="init()">
+    <input id="fileInput" type="file" name="file" />
+    <pre id="fileContent"></pre>
+  </body>
 </html>
+<script>
+function init(){
+  document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+}
+
+function handleFileSelect(event){
+  const reader = new FileReader()
+  reader.onload = handleFileLoad;
+  reader.readAsText(event.target.files[0])
+}
+
+function handleFileLoad(event){
+  console.log(event);
+  var filename = fileInput.value.replace(/^.*[\\\/]/, '');
+  alert(filename);
+  var testObject = event.target.result;
+  localStorage.setItem('testObject', JSON.stringify(testObject));
+  var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+  console.log('retrievedObject: ', retrievedObject);
+
+  alert(retrievedObject);
+  //not operating
+  var crypt = new Crypt();
+  var rsa = new RSA();
+
+  rsa.generateKeyPair(function(keyPair) {
+    var publicKey = keyPair.publicKey;
+    var privateKey = keyPair.privateKey;
+    
+    var data = event.target.result;
+    //encrypting data
+    var encrypted = crypt.encrypt(publicKey, data);
+
+    //upload them to server?
+
+    //saving keys to local storage
+    localStorage.setItem(fileName+"PublicKey", JSON.stringify(publicKey));
+    localStorage.setItem(fileName+"PrivateKey", JSON.stringify(privateKey));
+  });
+  function decrypt(){
+    //get data(encrypted) from server? extract data name (fileName)
+    var privateKey = JSON.parse(localStorage.getItem(fileName+"PrivateKey"));
+    var decrypted = crypt.decrypt(privateKey, encrypted);
+    var message = decrypted.message;
+    //download message??
+    return message;
+
+
+  }
+
+}
+</script>
+
 
 
