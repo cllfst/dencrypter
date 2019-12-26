@@ -20,10 +20,10 @@ var app = express();
 const http = require('http');
 
 const createUserSchema = joi.object().keys({
-   username: joi.string().alphanum().min(2).max(30).required(),
-   password: joi.string().min(2).max(30).required(),
-   email: joi.string().email().required(),
-   signup: joi.allow(),
+  username: joi.string().alphanum().min(2).max(30).required(),
+  password: joi.string().min(2).max(30).required(),
+  email: joi.string().email().required(),
+  signup: joi.allow(),
 });
 
 
@@ -47,13 +47,13 @@ app.use('/login', loginRouter);
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -66,7 +66,7 @@ app.use(function(err, req, res, next) {
 
 
 
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`listening on port ${port} `));
 
