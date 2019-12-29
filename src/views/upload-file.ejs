@@ -20,82 +20,90 @@
     <input id="fileInput" type="file" name="file" />
     <pre id="fileContent"></pre>
   </body>
-</html>
-<script>
-function init(){
-  document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
-}
-
-function handleFileSelect(event){
-  const reader = new FileReader()
-  reader.onload = handleFileLoad;
-  reader.readAsBinaryString(event.target.files[0])
-}
-
-function handleFileLoad(event){
-  console.log(event);
-
-  var filename = fileInput.value.replace(/^.*[\\\/]/, '');
-
-  
-  var testObject = event.target.result;
-  localStorage.setItem('testObject', JSON.stringify(testObject));
-  var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
-  console.log('retrievedObject: ', retrievedObject);
-
-  var crypt = new Crypt();
-  var rsa = new RSA();
-  
-  //try synchrone
-  rsa.generateKeyPair(function(keyPair) {
-    var publicKey = keyPair.publicKey;
-    var privateKey = keyPair.privateKey;
-    
-    var data = event.target.result;
-    //encrypting data
-    var encrypted = crypt.encrypt(publicKey, data);
-
-
-    //library :  XMLHTTPREQUEST
-    //upload them to server?
-
-    //saving keys to local storage
-    localStorage.setItem(filename+"PublicKey", JSON.stringify(publicKey));
-    localStorage.setItem(filename+"PrivateKey", JSON.stringify(privateKey));
-    //change this
-    localStorage.setItem(filename+"Encrypted", JSON.stringify(encrypted));
-    
-  });
-  function decrypt(filename){
-    //get data(encrypted) from server? extract data name (fileName)
-    //change this
-    var encrypted = JSON.parse(localStorage.getItem(filename+"Encrypted"));
-    
-    var privateKey = JSON.parse(localStorage.getItem(filename+"PrivateKey"));
-    //this star has a problem
-    var decrypted = crypt.decrypt(privateKey, encrypted);
-    var message = decrypted.message;
-    //download message??
-    return message;
-  }
-  var xhr=new XMLHttpRequest();
-  var data = decrypt(filename);
-  var url = "/home/upload"; 
-  xhr.open('POST', url, true);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      callback(xhr.response);
+  <script>
+    function init(){
+      document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
     }
-  }
-  var number = {
-           value: 1547
-         }
-  xhr.send(JSON.stringify(number));
-  alert('ola');
-  
-  
-}
-</script>
+    
+    function handleFileSelect(event){
+      const reader = new FileReader()
+      reader.onload = handleFileLoad;
+      reader.readAsBinaryString(event.target.files[0])
+    }
+    
+    function handleFileLoad(event){
+      console.log(event);
+    
+      var filename = fileInput.value.replace(/^.*[\\\/]/, '');
+    
+      
+      var testObject = event.target.result;
+      localStorage.setItem('testObject', JSON.stringify(testObject));
+      var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+      console.log('retrievedObject: ', retrievedObject);
+    
+      var crypt = new Crypt();
+      var rsa = new RSA();
+      
+      //try synchrone
+      rsa.generateKeyPair(function(keyPair) {
+        var publicKey = keyPair.publicKey;
+        var privateKey = keyPair.privateKey;
+        
+        var data = event.target.result;
+        //encrypting data
+        var encrypted = crypt.encrypt(publicKey, data);
+    
+    
+        //library :  XMLHTTPREQUEST
+        //upload them to server?
+    
+        //saving keys to local storage
+        alert(encrypted);
+        //localStorage.setItem(filename+"PublicKey", publicKey);
+        localStorage.setItem(filename+"PrivateKey", JSON.stringify(privateKey));
+        //change this
+        //localStorage.setItem(filename+"Encrypted", encrypted);
+        //save public key as well
+        var xhr=new XMLHttpRequest();
+        var url = "/home/upload"; 
+        xhr.open('POST', url, true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            callback(xhr.response);
+          }
+        }
+        var message = "value="+ encrypted + "&fileName="+filename;
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(message);
+        
+      });
+    }
+    function decrypt(){
+      //change this?? how to know if it exists1
+      var name = '<%- filename %>';
+      var encrypted = '<%- file %>';
+
+      var privateKey = JSON.parse(localStorage.getItem(name+"PrivateKey"));
+      alert(encrypted);
+      alert(privateKey);
+
+      //this has a problem2
+      var decrypted = crypt.decrypt(privateKey,encrypted);
+      alert("oooy");
+      var message = decrypted.message;
+      //download?3
+      alert(message);
+      return message;
+    }
+    </script>
+  <form action="/home/download" method="post">
+    File name: <input type="text" name="fileName"><br>
+    <input type="submit" value="Decrypt" onclick="decrypt()">
+  </form>
+</html>
+
+
 
 
 

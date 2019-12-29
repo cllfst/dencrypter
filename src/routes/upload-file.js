@@ -24,11 +24,27 @@ router.get('/', (req, res) => {
 });
 router.post("/upload", (req, res) => {
     //content transmission problem
-    console.log("look what we got");
-    var num = req.body.value;
-    console.log(num);
+    var message = req.body.value;
+    var name = req.body.fileName;
+    console.log(message);
+    console.log(name);
+    fs.writeFileSync("data/encrypted/"+name+"Encrypted", message, 'binary');
+
     res.render(path.join(__dirname, "../views/upload-file.ejs"));
 
+});
+router.post("/download", (req, res) => {
+    
+    var name = req.body.fileName;
+    console.log(name);
+    //multiple clients though?
+    //if client and if name???
+    var data = fs.readFileSync("data/encrypted/"+name+"Encrypted", 'binary');
+
+    res.render(path.join(__dirname, "../views/upload-file.ejs"), {
+       file : data,
+       filename : name, 
+    })
 });
 
 router.post('/encrypt', (req, res) => {
@@ -38,7 +54,7 @@ router.post('/encrypt', (req, res) => {
         var publicKey = keyPair.publicKey;
         var privateKey = keyPair.privateKey;
         
-        data =  fs.readFileSync("../data/uploads/"+fileName, "binary"); 
+        data =  fs.readFileSync("data/uploads/"+fileName, "binary"); 
         console.log("data : "+data);
         encrypted = crypt.encrypt(publicKey, data);
 
