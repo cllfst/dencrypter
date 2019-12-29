@@ -43,7 +43,7 @@ router.post("/download", (req, res) => {
 
     res.render(path.join(__dirname, "../views/upload-file.ejs"), {
        file : data,
-       filename : name, 
+       filen : name, 
     })
 });
 
