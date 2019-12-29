@@ -37,11 +37,10 @@ router.post("/download", (req, res) => {
     
     var name = req.body.fileName;
     console.log(name);
-    //multiple clients though?
-    //if client and if name???
+    //if err
     var data = fs.readFileSync("data/encrypted/"+name+"Encrypted", 'binary');
 
-    res.render(path.join(__dirname, "../views/upload-file.ejs"), {
+    res.render(path.join(__dirname, "../views/download.ejs"), {
        file : data,
        filen : name, 
     })
