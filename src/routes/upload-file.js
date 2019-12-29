@@ -25,7 +25,6 @@ router.get('/', (req, res) => {
 router.post("/upload", (req, res) => {
     //content transmission problem
     console.log("look what we got");
-    var req = http.get();
     var num = req.body.value;
     console.log(num);
     res.render(path.join(__dirname, "../views/upload-file.ejs"));
