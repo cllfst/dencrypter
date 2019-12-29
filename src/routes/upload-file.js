@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const formidable = require('formidable');
+const fetch = require("node-fetch");
+
 var RSA = require('hybrid-crypto-js').RSA;
 var Crypt = require('hybrid-crypto-js').Crypt;
 var crypt = new Crypt();
@@ -14,21 +16,20 @@ var router = express.Router();
 //test for commit
 
 router.get('/', (req, res) => {
+    console.log("!..!");
     userName = 'Mark';
     res.render(path.join(__dirname, "../views/upload-file.ejs"), {
         user : userName,
     });
 });
-router.post('/upload', (req, res) => {
-    console.log(`hi`);
-    new formidable.IncomingForm().parse(req)
-    .on('fileBegin', (name, file) => {
-        file.path = path.join(__dirname, '../data/uploads/' + file.name)
-    })
-    .on('file', (name, file) => {
-      console.log('Uploaded file', name, file)
-    })
+router.post("/upload", (req, res) => {
+    //content transmission problem
+    console.log("look what we got");
+    var req = http.get();
+    var num = req.body.value;
+    console.log(num);
     res.render(path.join(__dirname, "../views/upload-file.ejs"));
+
 });
 
 router.post('/encrypt', (req, res) => {
@@ -44,7 +45,7 @@ router.post('/encrypt', (req, res) => {
 
         //saving encrypted data
         fs.writeFileSync("../data/encrypted/"+fileName+"Encrypted", encrypted, 'binary');
-       
+        
         //saving keys
         fs.writeFileSync("../data/keys/"+fileName+"PublicKey.pem", publicKey);
         fs.writeFileSync("../data/keys/"+fileName+"PrivateKey.pem", privateKey);

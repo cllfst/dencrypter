@@ -12,7 +12,6 @@
 
         <html>
   <head>
-    <script src="script.js"></script>
     <script type="text/javascript" src="hybrid-crypto.min.js"></script>
 
   </head>
@@ -30,23 +29,24 @@ function init(){
 function handleFileSelect(event){
   const reader = new FileReader()
   reader.onload = handleFileLoad;
-  reader.readAsText(event.target.files[0])
+  reader.readAsBinaryString(event.target.files[0])
 }
 
 function handleFileLoad(event){
   console.log(event);
+
   var filename = fileInput.value.replace(/^.*[\\\/]/, '');
-  alert(filename);
+
+  
   var testObject = event.target.result;
   localStorage.setItem('testObject', JSON.stringify(testObject));
   var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
   console.log('retrievedObject: ', retrievedObject);
 
-  alert(retrievedObject);
-  //not operating
   var crypt = new Crypt();
   var rsa = new RSA();
-
+  
+  //try synchrone
   rsa.generateKeyPair(function(keyPair) {
     var publicKey = keyPair.publicKey;
     var privateKey = keyPair.privateKey;
@@ -55,23 +55,45 @@ function handleFileLoad(event){
     //encrypting data
     var encrypted = crypt.encrypt(publicKey, data);
 
+
+    //library :  XMLHTTPREQUEST
     //upload them to server?
 
     //saving keys to local storage
-    localStorage.setItem(fileName+"PublicKey", JSON.stringify(publicKey));
-    localStorage.setItem(fileName+"PrivateKey", JSON.stringify(privateKey));
+    localStorage.setItem(filename+"PublicKey", JSON.stringify(publicKey));
+    localStorage.setItem(filename+"PrivateKey", JSON.stringify(privateKey));
+    //change this
+    localStorage.setItem(filename+"Encrypted", JSON.stringify(encrypted));
+    
   });
-  function decrypt(){
+  function decrypt(filename){
     //get data(encrypted) from server? extract data name (fileName)
-    var privateKey = JSON.parse(localStorage.getItem(fileName+"PrivateKey"));
+    //change this
+    var encrypted = JSON.parse(localStorage.getItem(filename+"Encrypted"));
+    
+    var privateKey = JSON.parse(localStorage.getItem(filename+"PrivateKey"));
+    //this star has a problem
     var decrypted = crypt.decrypt(privateKey, encrypted);
     var message = decrypted.message;
     //download message??
     return message;
-
-
   }
-
+  var xhr=new XMLHttpRequest();
+  var data = decrypt(filename);
+  var url = "/home/upload"; 
+  xhr.open('POST', url, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      callback(xhr.response);
+    }
+  }
+  var number = {
+           value: 1547
+         }
+  xhr.send(JSON.stringify(number));
+  alert('ola');
+  
+  
 }
 </script>
 
