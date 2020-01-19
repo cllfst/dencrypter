@@ -60,7 +60,7 @@
         //upload them to server?
     
         //saving keys to local storage
-        alert(encrypted);
+        
         //localStorage.setItem(filename+"PublicKey", publicKey);
         localStorage.setItem(filename+"PrivateKey", JSON.stringify(privateKey));
         //localStorage.setItem(filename+"Encrypted", encrypted);
@@ -68,11 +68,6 @@
         var xhr=new XMLHttpRequest();
         var url = "/home/upload"; 
         xhr.open('POST', url, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            callback(xhr.response);
-          }
-        }
         var message = "value="+ encrypted + "&fileName="+filename;
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send(message);

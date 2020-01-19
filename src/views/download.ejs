@@ -12,7 +12,7 @@
 
         <html>
   <head>
-    <script type="text/javascript" src="hybrid-crypto.min.js"></script>
+    <script type="text/javascript" src="../hybrid-crypto.min.js"></script>
 
   </head>
 
@@ -69,11 +69,6 @@
         var xhr=new XMLHttpRequest();
         var url = "/home/upload"; 
         xhr.open('POST', url, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            callback(xhr.response);
-          }
-        }
         var message = "value="+ encrypted + "&fileName="+filename;
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send(message);
@@ -89,21 +84,35 @@
     }
   }
   function decrypt(){
+    var crypt = new Crypt();
     var name = '<%- filen %>';
     var encrypted = '<%- file %>';
 
     var privateKey = JSON.parse(localStorage.getItem(name+"PrivateKey"));
-    alert(encrypted);
-    alert(privateKey);
+    console.log(encrypted);
     //benesba l text
     //SaveAsFile(encrypted,"filename.txt","text/plain;charset=utf-8");
     //maybe image/gif
 
     //this has a problem1
-    var decrypted = crypt.decrypt(""+privateKey,encrypted);
+
+    console.log(privateKey);
+
+    //length?? utf8? forge.util.decode64...
+    var result = "";
+    for (i=0; i<encrypted.length; i++) {
+        hex = encrypted.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    encrypted = result;
+    alert(encrypted);
+    alert(encrypted.length);
+    var decrypted = crypt.decrypt("" +privateKey,encrypted);
     alert("oooy");
     var message = decrypted.message;
     alert(message);
+    //SaveAsFile(message,"filename.txt","text/plain;charset=utf-8");
     //problem2 readASbinary not working, just like saveAs
     return message;
   }
