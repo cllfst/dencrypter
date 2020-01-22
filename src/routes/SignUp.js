@@ -10,7 +10,7 @@ require('dotenv/config');
 
 
 router.get('/', (req, res, next) => {
-    res.sendFile(path.resolve('../src/public/SignUp.html'));
+    res.sendFile(path.resolve('../src/public/html/SignUp.html'));
 
 });
 
@@ -30,11 +30,11 @@ router.post('/', (req, res) => {
 
         db.collection('users').find({ username: req.body.username }).toArray(function (err, result) {
             if (result.length > 0)
-                res.sendFile(path.resolve('../src/public/signUperror.html'));
+                res.sendFile(path.resolve('../src/public/html/signUperror.html'));
 
             else {
                 user.save()
-                res.sendFile(path.resolve('../src/public/home.html'));
+                res.sendFile(path.resolve('../src/public/html/home.html'));
             }
             client.close();
 
@@ -44,8 +44,4 @@ router.post('/', (req, res) => {
 });
 
 
-router.post('/checkusers', async (req, res) => {
-    const users = await User.find();
-    res.json(users);
-
-})
+module.exports = router;

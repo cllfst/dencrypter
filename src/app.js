@@ -19,15 +19,6 @@ var app = express();
 
 const http = require('http');
 
-const createUserSchema = joi.object().keys({
-  username: joi.string().alphanum().min(2).max(30).required(),
-  password: joi.string().min(2).max(30).required(),
-  email: joi.string().email().required(),
-  signup: joi.allow(),
-});
-
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -38,6 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
