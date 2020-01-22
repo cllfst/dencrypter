@@ -1,0 +1,48 @@
+#gauche {
+    border-color:4d94ff;
+    border-style: solid;
+    background-color: 4d94ff;
+    margin: 5% 40% 10% 10%; 
+    overflow:visible;
+    float: left;
+    display: inline;
+    
+}
+
+.words {
+    color: white;
+    padding:15% 10% 15% 5% ;
+    
+    
+}
+
+h1 {
+    padding-bottom: 50;
+    font-size: 100;
+    text-align: center;
+}
+
+h3 {
+    padding-left: 140;
+    font-size: 30;
+}
+
+
+.fileupload {
+    border-color:4d94ff;
+    border-style: solid;
+    background-color: 4d94ff;   
+    display: block;  
+    float: right;
+    margin-right: 2%;
+    width: 30%;
+    box-sizing: content-box;
+    
+    
+    
+}
+
+img {
+      z-index: -1;
+    float: right;
+}
