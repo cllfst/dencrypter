@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('../models/users');
 var MongoClient = require('mongodb').MongoClient;
 
@@ -18,25 +19,21 @@ router.post('/', (req, res) => {
         password: req.body.password
     });
 
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(url, async function (err, db) {
         console.log("connected");
         if (err) throw err;
         else {
             var dbo = db.db("users");
-            dbo.collection("users").countDocuments({ $and: [{ "email": req.body.email, "password": req.body.password }] }, function (err, length) {
-
-                if (length == 1) {
-                    res.sendFile(path.resolve('../src/public/html/home.html'));
+            dbo.collection("users").findOne({ "email": req.body.email }, function (err, result) {
+                if (err) res.sendFile(path.resolve('../src/public/html/login.html'));
+                else {
+                    if (result && bcrypt.compare(req.body.password, result.password)) res.sendFile(path.resolve('../src/public/html/home.html'));
+                    else res.sendFile(path.resolve('../src/public/html/login.html'));
                 }
-                else res.sendFile(path.resolve('../src/public/html/login.html'));
-            })
+            });
         }
         db.close();
     })
-
-
-
-
 })
 
 
