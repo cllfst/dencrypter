@@ -1,0 +1,58 @@
+body {
+    width: auto;
+    overflow: hidden;
+    }
+.text {
+    margin: 5% ;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    padding: 15% 10% 15% 5%;
+    background-color: #4586e7;
+    color: white;
+    float: left;
+    }
+h1 {
+    font-size: 100px;
+}
+.buttons {
+    background-color: #4586e7;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    padding: 10% 10% 11% 10%;
+    float: left;
+    color: white;
+}
+.my-container {
+    text-align: center;
+}
+.form {
+    padding-bottom: 10%;
+}
+.btn {   
+    width: 120px;
+    height: 70px;
+    text-align: center;
+    padding-bottom: 5%;    
+}
+.input {
+    height: 70px;
+    width: 250px;
+    text-align: center;
+}
+img {
+    z-index: -1;
+    position: absolute;
+    right: 0px;
+    top: 3%; 
+    right: -40%;
+    padding-left: 150%;
+    margin-left: 10%;
+    height: 90%;
+}
+button {
+    padding-bottom: 10%;    
+}   
+label {
+    font-size: 20px;    
+}

@@ -1,0 +1,69 @@
+.vert-bar {
+        padding-top: 5%;
+        padding-right: %;
+        float: left;
+        background-color: #4586e7;
+        height: 100%;
+}
+.image {
+    padding-bottom: 20%;
+}
+h4 {
+    padding-bottom: 10%;
+}
+a {
+    font-size: 30px;
+}
+.icons {
+    padding-left: 45%;
+    padding-top: 150%;
+}
+.icons a {
+    display: inline-block;
+    color:white;  
+}
+body {
+    display: inline-block;
+}
+#content {
+    border: 4px solid lightgrey;
+    border-radius: 8px;
+    height: 100%;
+    width: 150%;        
+}
+.box {
+    float:left;
+    width: 50%;
+    display: inline-block;
+}
+.folder {
+    color: #fcf05d;
+    font-size: 70px;
+    padding-right: 10%;
+    padding-bottom: 5%;
+    float: left;
+}
+.file {
+    color: darkgray;
+    font-size: 70px;
+    padding-right: 10%;
+    padding-bottom: 5%;
+    float: left;
+}
+.border {
+    height: 85%;
+    position: absolute;
+    top: 10%;
+    float: right;
+    margin-left: 5%;
+    border-width: 5px; 
+}
+.box {
+    float: left;
+    width: 50%;
+    display:;
+}
+.pencil {
+    float: right;
+        
+}
