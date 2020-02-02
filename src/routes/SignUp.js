@@ -15,7 +15,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res) => {
-
+    const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        username: req.body.username,
+        email: req.body.email,
+        password: 'hash'
+    });
     MongoClient.connect(url, function (err, client) {
         var db = client.db("users");
         var ha = "password";
@@ -24,18 +30,13 @@ router.post('/', (req, res) => {
                 res.sendFile(path.resolve('../src/public/html/signUperror.html'));
 
             else {
-                const saltRounds = 10;
-                const plainPassword = req.body.password;
-                const salt = await bcrypt.genSalt(saltRounds);
-                const hash = await bcrypt.hash(plainPassword, salt);
-                var user = new User({
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    username: req.body.username,
-                    email: req.body.email,
-                    password: hash
-                });
-                await user.save();
+                // const saltRounds = 10;
+                // const plainPassword = req.body.password;
+                // const salt = await bcrypt.genSalt(saltRounds);
+                // const hash = await bcrypt.hash(plainPassword, salt);
+                
+                console.log(user);
+                user.save();
                 await res.sendFile(path.resolve('../src/public/html/home.html'));
             }
             client.close();
