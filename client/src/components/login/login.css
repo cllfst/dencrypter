@@ -1,0 +1,46 @@
+body {
+    width: auto;
+    overflow: hidden;
+    }
+.block{
+    float: left;
+}
+.login-text {
+    margin-top: 15%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    padding: 40% 150% 23% 20%;
+    background-color: #4586e7;
+    color: white;
+    }
+h1 {
+    font-size: 100px;
+}
+.buttons {
+    background-color: #4586e7;
+    padding: 30% 80% 35% 30%;
+    margin-top: -135%;
+    margin-left: 200%;
+    color: white;
+    
+}
+.form {
+    width: 300px;
+    margin-bottom: 20px;
+}
+.my-container {
+    text-align: center;
+}
+img {
+    z-index: -1;
+    position: absolute;
+    top: 3%; 
+    right: -40%;
+    padding-left: 150%;
+    margin-left: 10%;
+    height: 90%;
+}  
+label {
+    font-size: 25px;
+    margin-bottom: 10px;
+}

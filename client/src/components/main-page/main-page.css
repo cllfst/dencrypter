@@ -1,0 +1,40 @@
+body {
+    width: auto;
+    overflow: hidden;
+}
+.textt {
+    margin: 5% ;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    padding: 10% 10% 10% 5%;
+    background-color: #4586e7;
+    color: white;
+    float: left;
+}
+h1 {
+    font-size: 50px;
+}
+.buttonss {
+    background-color: #4586e7;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    padding: 10% 10% 13.5% 10%;
+    float: left;
+}
+.btn {
+    margin: 10px;
+    width: 150px;
+    height: 100px;
+}
+
+img {
+    z-index: -1;
+    position: absolute;
+    right: 0px;
+    top: 3%; 
+    right: -40%;
+    padding-left: 150%;
+    margin-left: 10%;
+    height: 90%;
+}

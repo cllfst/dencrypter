@@ -1,8 +1,8 @@
 body {
     width: auto;
     overflow: hidden;
-    }
-.text {
+}
+.reg-text {
     margin: 5% ;
     margin-bottom: 10%;
     margin-left: 5%;
@@ -10,26 +10,25 @@ body {
     background-color: #4586e7;
     color: white;
     float: left;
-    }
+}
 h1 {
     font-size: 100px;
 }
-.buttons {
+.reg-buttons {
     background-color: #4586e7;
-    margin-top: -20%;
+    margin-top: 5%;
     margin-bottom: 10%;
     margin-left: 5%;
-    padding: 10% 10% 11% 10%;
+    padding: 2% 8% 0.7% 8%;
     float: left;
     color: white;
 }
-.my-container {
+.reg-form {
+    padding-bottom: 7%;
     text-align: center;
 }
-.form {
-    padding-bottom: 10%;
-}
-.btn {   
+.btn {
+   
     width: 120px;
     height: 70px;
     text-align: center;
@@ -37,7 +36,7 @@ h1 {
 }
 .input {
     height: 70px;
-    width: 250px;
+    width: 200px;
     text-align: center;
 }
 img {
@@ -48,11 +47,9 @@ img {
     right: -40%;
     padding-left: 150%;
     margin-left: 10%;
-    height: 90%;
+    height: 90%;    
 }
-button {
-    padding-bottom: 10%;    
-}   
 label {
-    font-size: 20px;    
+    float: left;
 }
+        

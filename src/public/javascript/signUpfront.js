@@ -15,19 +15,19 @@ function fNameFunction() {
 
 
 function lNameFunction() {
-    var name = document.getElementById("lastname").value;
-    var message = document.getElementById("lName");
+    // var name = document.getElementById("lastname").value;
+    // var message = document.getElementById("lName");
 
 
-    if (name.length < 3) {
-        message.innerHTML = "last name is too short !";
-        return false;
-    }
-    else {
-        message.innerHTML = "";
-        return true;
-    }
-
+    // if (name.length < 3) {
+    //     message.innerHTML = "last name is too short !";
+    //     return false;
+    // }
+    // else {
+    //     message.innerHTML = "";
+    //     return true;
+    // }
+    return true;
 
 }
 
@@ -136,15 +136,15 @@ function verifyPassword() {
 }
 
 
-function submitFunction() {
+// function submitFunction() {
 
 
-    if (fNameFunction() && lNameFunction() && userName() && emailAdd() && passwordFn() && verifyPassword()) {
-    }
-    else {
-        document.getElementById("error").addEventListener("click", function (event) {
-            event.preventDefault()
-        });
+//     if (fNameFunction() && lNameFunction() && userName() && emailAdd() && passwordFn() && verifyPassword()) {
+//     }
+//     else {
+//         document.getElementById("error").addEventListener("click", function (event) {
+//             event.preventDefault()
+//         });
 
-    }
-}
+//     }
+// }
