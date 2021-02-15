@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dencrypter/Home</title>
+        <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h1>Oh hi mark ! </h1>
+        <h1>Welcome to Dencrypter, the most visited site in 2025 !! </h1>
+
+
+        <html>
+  <head>
+    <script type="text/javascript" src="../hybrid-crypto.min.js"></script>
+
+  </head>
+
+  <body onload="init()">
+    <input id="fileInput" type="file" name="file" />
+    <pre id="fileContent"></pre>
+  </body>
+
+  <script>
+    function init(){
+      document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+    }
+    
+    function handleFileSelect(event){
+      const reader = new FileReader()
+      reader.onload = handleFileLoad;
+      reader.readAsBinaryString(event.target.files[0])
+    }
+    
+    function handleFileLoad(event){
+      console.log(event);
+    
+      var filename = fileInput.value.replace(/^.*[\\\/]/, '');
+    
+      
+      var testObject = event.target.result;
+      localStorage.setItem('testObject', JSON.stringify(testObject));
+      var retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+      console.log('retrievedObject: ', retrievedObject);
+    
+      var crypt = new Crypt();
+      var rsa = new RSA();
+      
+      //try synchrone
+      rsa.generateKeyPair(function(keyPair) {
+        var publicKey = keyPair.publicKey;
+        var privateKey = keyPair.privateKey;
+        
+        var data = event.target.result;
+        //encrypting data
+        var encrypted = crypt.encrypt(publicKey, data);
+    
+    
+        //library :  XMLHTTPREQUEST
+        //upload them to server?
+    
+        //saving keys to local storage
+        alert(encrypted);
+        //localStorage.setItem(filename+"PublicKey", publicKey);
+        localStorage.setItem(filename+"PrivateKey", JSON.stringify(privateKey));
+        //change this
+        //localStorage.setItem(filename+"Encrypted", encrypted);
+        //save public key as well
+        var xhr=new XMLHttpRequest();
+        var url = "/home/upload"; 
+        xhr.open('POST', url, true);
+        var message = "value="+ encrypted + "&fileName="+filename;
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(message);
+        
+      });
+    }
+    function SaveAsFile(t,f,m) {
+    try {
+      var b = new Blob([t],{type:m});
+      saveAs(b, f);
+    } catch (e) {
+      window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+    }
+  }
+  function decrypt(){
+    var crypt = new Crypt();
+    var name = '<%- filen %>';
+    var encrypted = '<%- file %>';
+
+    var privateKey = JSON.parse(localStorage.getItem(name+"PrivateKey"));
+    console.log(encrypted);
+    //benesba l text
+    //SaveAsFile(encrypted,"filename.txt","text/plain;charset=utf-8");
+    //maybe image/gif
+
+    //this has a problem1
+
+    console.log(privateKey);
+
+    //length?? utf8? forge.util.decode64...
+    var result = "";
+    for (i=0; i<encrypted.length; i++) {
+        hex = encrypted.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    encrypted = result;
+    alert(encrypted);
+    alert(encrypted.length);
+    var decrypted = crypt.decrypt("" +privateKey,encrypted);
+    alert("oooy");
+    var message = decrypted.message;
+    alert(message);
+    //SaveAsFile(message,"filename.txt","text/plain;charset=utf-8");
+    //problem2 readASbinary not working, just like saveAs
+    return message;
+  }
+  </script>
+  <form action="/home/download" method="post">
+    File name: <input type="text" name="fileName"><br>
+    <input type="submit" value="Submit">
+  </form>
+  <input type="button" value="Download" onclick="decrypt()">
+
+</html>
+<script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+<script>
+</script>
+
+
+
+
+

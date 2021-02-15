@@ -1,8 +1,31 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
+        background-image: url(../background.jpg);
+        background-size:cover;
+        background-repeat: no-repeat;
+    }
+    h1 {
+              
+        color:white;
+        margin: 20;
+        font-size: 40;
+        text-align : center;
+    }
+    div {
+        text-align: center;
+        font-size: 40;
+        margin: 50;
+    }
+    form {
+        text-align: center;
+    }
+    button {
+        display: block;
+        text-align: center;
+    }
+    input[type=submit] {
+        text-align: right;
+    }
+    input[type=file] {
+        height: 1cm;
+        width: 7cm;
+    }
